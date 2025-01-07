@@ -1,13 +1,13 @@
 # Exercises for Webinar 3
 
-We provide exercises in pytorch. Work through all the exercises.
+We provide exercises in pytorch. You should work through all the exercises before the 3rd Webinar session. during the webinar we will have a Q&A session to answer any questions youo may have about the notebooks or exercises.
 
 ## Pytorch
 
-In the first two exercises we follow up on the exercises from webinar 2 and implement a CNN and data augmentation for image classification on the cifar dataset.
+In the first two exercises we implement a CNN and data augmentation for image classification on the cifar dataset.
 The last exercise provides an introduction to image segmentation with a U-net to prepare us for the course and introduce a very important method for bioimage analysis.
 
-For the pytorch exercises, please use the `DL Course(Pytorch)` environment in BAND. You can start it via `Applications->Programming->DL Course(Pytorch)`.
+For the pytorch exercises, please use the `DL Course(Pytorch)` environment in BARD.
 
 
 ## Additional materials:
