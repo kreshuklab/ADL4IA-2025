@@ -1,6 +1,8 @@
 channels:
+    - nodefaults
     - pytorch
     - conda-forge
+
 name:
     dl-image-pytorch-gpu
 dependencies:
@@ -13,6 +15,7 @@ dependencies:
     - scikit-image
     - scikit-learn
     - tensorboard
+    - wandb
     - torchvision
     - tqdm
     - pip:
