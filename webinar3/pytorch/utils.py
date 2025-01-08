@@ -10,7 +10,6 @@ import torch.nn.functional as F
 
 from torch.utils.data import Dataset
 from torch.optim.lr_scheduler import ReduceLROnPlateau
-from torch.utils.tensorboard import SummaryWriter
 
 import sklearn.metrics as metrics
 from sklearn.model_selection import train_test_split
@@ -165,7 +164,7 @@ def save_checkpoint(model, optimizer, epoch, save_path):
     )
 
 
-def load_checkpoin(save_path, model, optimizer):
+def load_checkpoint(save_path, model, optimizer):
     checkpoint = torch.load(save_path)
     model.load_state_dict(checkpoint["model_state_dict"])
     optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
@@ -192,7 +191,6 @@ def train(
     optimizer,
     device,
     epoch,
-    # tb_logger,
     log_image_interval=100,
 ):
     """Train model for one epoch.
@@ -206,7 +204,6 @@ def train(
         by backpropagation of the loss
     device - the device used for training. this can either be the cpu or gpu
     epoch - which trainin eppch are we in? we keep track of this for logging
-    #tb_logger - the tensorboard logger, it is used to communicate with tensorboard
     log_image_interval - how often do we send images to tensborboard?
     """
 
@@ -218,9 +215,6 @@ def train(
     # log the learning rate before the epoch
     lr = get_current_lr(optimizer)
     wandb.log({"learning-rate": lr}, step=epoch * n_batches)
-    # tb_logger.add_scalar(
-    #    tag="learning-rate", scalar_value=lr, global_step=epoch * n_batches
-    # )
 
     # iterate over the training batches provided by the loader
     for batch_id, (x, y) in enumerate(loader):
@@ -250,9 +244,6 @@ def train(
         # log the loss value to tensorboard
         step = epoch * n_batches + batch_id
         wandb.log({"train-loss": loss_value.item()}, step=step)
-        # tb_logger.add_scalar(
-        #    tag="train-loss", scalar_value=loss_value.item(), global_step=step
-        # )
 
         # check if we log images, and if we do then send the
         # current image to tensorboard
@@ -260,12 +251,9 @@ def train(
             # TODO make logging more pretty, see
             # https://www.tensorflow.org/tensorboard/image_summaries
             wandb.log({"input": [wandb.Image(x.to("cpu"))]}, step=step)
-            # tb_logger.add_images(tag="input", img_tensor=x.to("cpu"), global_step=step)
 
 
-def validate(
-    model, loader, loss_function, device, step, logging=False
-):  # tb_logger=None):
+def validate(model, loader, loss_function, device, step, logging=False):
     """
     Validate the model predictions.
 
@@ -275,7 +263,6 @@ def validate(
     loss_function - the loss function
     device - the device used for prediction (cpu or gpu)
     step - the current training step. we need to know this for logging
-    tb_logger - the tensorboard logger. if 'None', logging is disabled
     logging - if True, we log the validation results to wandb
     """
     # set the model to eval mode
@@ -314,26 +301,18 @@ def validate(
     predictions = np.concatenate(predictions)
     labels = np.concatenate(labels)
 
-    # log the validation results if we have a tensorboard
-    # if tb_logger is not None:
+    # log the validation results if we have set logging to True
     if logging == True:
 
         accuracy_error = 1.0 - metrics.accuracy_score(labels, predictions)
         mean_loss /= n_batches
 
         # TODO log more advanced things like confusion matrix, see
-        # https://www.tensorflow.org/tensorboard/image_summaries
 
         wandb.log(
             {"validation-error": accuracy_error, "validation-loss": mean_loss},
             step=step,
         )
-        # tb_logger.add_scalar(
-        #    tag="validation-error", global_step=step, scalar_value=accuracy_error
-        # )
-        # tb_logger.add_scalar(
-        #    tag="validation-loss", global_step=step, scalar_value=mean_loss
-        # )
 
     # return all predictions and labels for further evaluation
     return predictions, labels
@@ -352,9 +331,7 @@ def run_cifar_training(
     scheduler = ReduceLROnPlateau(optimizer, mode="max", factor=0.5, patience=1)
 
     checkpoint_path = f"best_checkpoint_{name}.tar"
-    log_dir = f"runs/{name}"
-    # tb_logger = SummaryWriter(log_dir)
-    run = wandb.init()
+    wandb.init()
 
     for epoch in trange(n_epochs):
         train(
@@ -364,7 +341,6 @@ def run_cifar_training(
             optimizer,
             device,
             epoch,
-            # tb_logger=tb_logger,
         )
         step = (epoch + 1) * len(train_loader)
 
@@ -374,7 +350,7 @@ def run_cifar_training(
             loss_function,
             device,
             step,
-            logging=True,  # tb_logger=tb_logger
+            logging=True,
         )
         val_accuracy = metrics.accuracy_score(labels, pred)
         scheduler.step(val_accuracy)
@@ -384,6 +360,8 @@ def run_cifar_training(
             # if it is, save this check point
             best_accuracy = val_accuracy
             save_checkpoint(model, optimizer, epoch, checkpoint_path)
+
+    wandb.finish()
 
     return checkpoint_path
 
