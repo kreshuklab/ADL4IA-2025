@@ -8,6 +8,7 @@ name:
 dependencies:
     - cudatoolkit >=10.2,<11  # choose correct CUDA version for your system
     - imageio
+    - aicsimageio
     - jupyter
     - nb_conda
     - pip
@@ -18,5 +19,6 @@ dependencies:
     - wandb
     - torchvision
     - tqdm
+    - napari
     - pip:
         - cifar2png
