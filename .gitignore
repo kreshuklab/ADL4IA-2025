@@ -3,3 +3,4 @@ __pycache__/
 *.log
 wandb/
 *.tar
+.ipynb_checkpoints/
