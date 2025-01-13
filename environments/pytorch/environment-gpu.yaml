@@ -20,5 +20,7 @@ dependencies:
     - torchvision
     - tqdm
     - napari
+    - pyqt
+    - matplotlib
     - pip:
         - cifar2png
