@@ -8,8 +8,9 @@
 
 ## Set-up:
 
-We will use on-premise EMBL resources for the course. You can also use google colab to run any of the notebooks.
+We will use on-premise EMBL resources (BARD) for the course. You can also use google colab to run the U-Net notebooks if you prefer. However, it might make sense to familiarise yourself with BARD as this is what you will be using during the course.
 
 ## BARD
 
+You will all be given a login to a BARD account, working within this VM you can clone the git repo to your home folder and complete the exercises. More details will be given in precourse webinar 1 and can be found on the ecampus page or youcan always ask if you have other questions.
 
