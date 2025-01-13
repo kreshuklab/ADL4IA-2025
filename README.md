@@ -57,5 +57,6 @@ These kernels/envs are read only.
 ========
 To create your own conda env
 1. start a terminal in vscode
-cd to your home directory
+   cd to your home directory
 2. source /opt/conda/etc/profile.d/conda.sh
+3. use conda as usual to create new environments
