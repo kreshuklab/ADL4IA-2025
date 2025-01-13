@@ -5,8 +5,12 @@ from itertools import product
 
 import numpy as np
 import torch
+import glob
 import torch.nn as nn
 import torch.nn.functional as F
+from zipfile import ZipFile
+from typing import Collection
+from pathlib import Path
 
 from torch.utils.data import Dataset
 from torch.optim.lr_scheduler import ReduceLROnPlateau
@@ -438,3 +442,16 @@ class SimpleCNN(nn.Module):
         x = self.fc(x)
         x = self.activation(x)
         return x
+
+
+def get_folder_names(zip_path: Path):
+    with ZipFile(zip_path, "r") as zf:
+        folder_names = sorted(name for name in zf.namelist() if name.count("/") == 1)
+    return folder_names
+
+
+def extract(zf: ZipFile, output_path: Path, member_folders: Collection[str]):
+    members = [
+        name for name in zf.namelist() if name[: name.index("/") + 1] in member_folders
+    ]
+    zf.extractall(output_path, members)
