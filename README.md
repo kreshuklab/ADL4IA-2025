@@ -45,8 +45,11 @@ You will need to login in wandb in order to start logging and will need to regis
 ### Conda environments:
 A few premade conda environments already exist within the docker container. These are read only. The pytorch environment will let you run all the pre-course exercises
 The kernels/conda envs available are
+
 /opt/conda/envs/pytorch/bin/python
+
 /opt/conda/envs/keras/bin/python
+
 /opt/conda/envs/sam/bin/python
 
 These kernels/envs are read only. 
