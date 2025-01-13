@@ -1,6 +1,6 @@
 # Exercises for U-Net
 
-We provide exercises in pytorch. You should work through all the exercises before the 3rd Webinar session. during the webinar we will have a Q&A session to answer any questions youo may have about the notebooks or exercises.
+We provide exercises in pytorch. You should work through all the exercises before the 3rd Webinar session. During the 3rd Webinar we will have a Q&A session to answer any questions you may have about the notebooks or exercises.
 
 ## Pytorch
 
