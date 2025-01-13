@@ -7,7 +7,7 @@ We provide exercises in pytorch. You should work through all the exercises befor
 In the first two exercises we implement a CNN and data augmentation for image classification on the cifar dataset.
 The last exercise provides an introduction to image segmentation with a U-net to prepare us for the course and introduce a very important method for bioimage analysis.
 
-For the pytorch exercises, please use the `DL Course(Pytorch)` environment in BARD.
+For the exercises, please use the `pytorch` environment in BARD. Or you can use the environment yaml to create a suitbale conda environment if you are working somewhere else.
 
 
 ## Additional materials:
