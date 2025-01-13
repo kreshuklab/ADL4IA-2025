@@ -9,7 +9,7 @@ import glob
 import torch.nn as nn
 import torch.nn.functional as F
 from zipfile import ZipFile
-from typing import Collection
+from typing import Collection, List, Union
 from pathlib import Path
 
 from torch.utils.data import Dataset
@@ -444,7 +444,9 @@ class SimpleCNN(nn.Module):
         return x
 
 
-def get_folder_names(zip_path: Path):
+def get_folder_names(zip_path: Union[Path, str]) -> List[str]:
+    if isinstance(zip_path, str):
+        zip_path = Path(zip_path)
     with ZipFile(zip_path, "r") as zf:
         folder_names = sorted(name for name in zf.namelist() if name.count("/") == 1)
     return folder_names
